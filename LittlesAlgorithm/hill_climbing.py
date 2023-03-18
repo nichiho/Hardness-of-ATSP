@@ -4,7 +4,6 @@ import random
 
 # Import files
 from LittlesAlgorithm.algorithm import get_minimal_route
-from generate_matrices import generate_matrix_log_norm
 
 # Hill-climbing method: 
 
@@ -16,18 +15,28 @@ from generate_matrices import generate_matrix_log_norm
 # (a) If the new run time > old run time, go to #3
 # (b) If the new run time <= old run time, revert to the older matrix, then go to #3
 
-def mutate_matrix(matrix):
+def mutate_matrix(matrix, max_value):
+    
+    # For the future: mutation can be done by modifying: adding by a value, by a certain percentage, etc.
+        # Disadvantage: If we start with small numbers, the values will stay small for a long time
+        # Replacing by a random value: no bias
+    # Not doing that for now because replacing by a random value shouldn't change the output by much at the moment
+    
+    # Matrice elements are random number between 1 and max_value
     [x, y] = random.sample(range(0, 3), 2)
-    matrix[x][y] = np.random.lognormal(np.log(mean) - 1/2 * sd**2, sd)
+    matrix[x][y] = random.randint(1, max_value)
     return matrix
 
-def hill_climbing(n_cities, mean, sd, n_iterations):
+def hill_climbing(n_cities, max_value, n_iterations):
     mtx_list = []
     run_time_list = []
     used_or_not = []
     
     # 1. Make a random matrix
-    mtx_1 = generate_matrix_log_norm(n_cities, mean, sd)
+    
+    # Matrice elements to be a random number between 1 and max_value
+    # (Same as Zhang & Khorfs a study of the complexity transitions on the ATSP)
+    mtx_1 = np.random.randint(1, max_value, size = (n_cities, n_cities))
     mtx_list.append(mtx_1)
     used_or_not.append(True)
     
@@ -38,7 +47,7 @@ def hill_climbing(n_cities, mean, sd, n_iterations):
     for i in range(0, n_iterations):
     
         # 3. Mutate the matrix (change a single number)
-        mtx_2 = mutate_matrix(mtx_1)
+        mtx_2 = mutate_matrix(mtx_1, max_value)
         print(mtx_2)
         mtx_list.append(mtx_2)
         
@@ -59,10 +68,3 @@ def hill_climbing(n_cities, mean, sd, n_iterations):
             used_or_not.append(False)
     
     return mtx_list, run_time_list, used_or_not
-        
-        
-mtx_list, run_time_list, used_or_not = hill_climbing(4, 10, 2, 10)
-
-import matplotlib.pyplot as plt
-plt.plot(run_time_list)
-plt.show()
