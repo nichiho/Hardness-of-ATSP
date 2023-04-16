@@ -3,7 +3,7 @@ import numpy as np
 import random
 
 # Import files
-from LittlesAlgorithm.algorithm import get_minimal_route
+from algorithm import get_minimal_route
 
 # Hill-climbing method: 
 
@@ -51,8 +51,8 @@ def hill_climbing(n_cities, max_value, n_iterations):
     mtx_list.append(mtx_1)
     used_or_not.append(True)
     
-    #2. Calculate the shortest tour & measure and save the performance of Little's algorithm
-    performance_1 = get_minimal_route(mtx_1)[0]
+    #2. Calculate the shortest tour & measure and save the performance (time) of Little's algorithm
+    performance_1 = get_minimal_route(mtx_1)[2]
     performance_list.append(performance_1)
     
     try:
@@ -63,20 +63,20 @@ def hill_climbing(n_cities, max_value, n_iterations):
             mtx_2 = mutate_matrix(mtx_1, n_cities, max_value)
             mtx_list.append(mtx_2)
             
-            # 4. Calculate the shortest tour & measure the performance of Little's algorithm
-            performance_2 = get_minimal_route(mtx_2)[0]
+            # 4. Calculate the shortest tour & measure the performance (time) of Little's algorithm
+            performance_2 = get_minimal_route(mtx_2)[2]
             performance_list.append(performance_2)
             
             # 5. 
-            # (a) If the new performance > old performance, go to #3
+            # (a) If the new performance > old performance
             if performance_2  > performance_1:
                 # new matrix becomes mtx_1, mutate from that
                 mtx_1 = mtx_2.copy()
                 performance_1 = performance_2
                 used_or_not.append(True)
             
-            # (b) If the new performance <= old performance, revert to the older matrix, then go to #3
-            if performance_2 <= performance_1:
+            # (b) If the new performance <= old performance, revert to the older matrix
+            else:
                 # Don't need to do anything, just repeat with mtx_1
                 used_or_not.append(False)
         
