@@ -4,7 +4,9 @@ import random
 import time
 
 # Import files
-from LittlesAlgorithm.algorithm import get_minimal_route
+import sys
+sys.path.insert(1, "..")
+from littles_algorithm.algorithm import get_minimal_route
 
 # Hill-climbing method: 
 
@@ -25,11 +27,11 @@ def mutate_matrix(matrix, n_cities, max_value):
     # Not doing that for now because replacing by a random value shouldn't change the output by much at the moment
 
     # Draw a sample of two numbers, random.sample makes sure the two numbers are not equal
-    [x, y] = random.sample(range(0, n_cities), 2)
+    [x, y] = random.sample(range(1, n_cities), 2)
     old_value = matrix[x][y]
     
-    # Matrice elements are random number between 1 and max_value
-    new_value = random.randint(1, max_value)
+    # Matrice elements are random number between 0 and max_value
+    new_value = random.randint(0, max_value)
     matrix_new[x][y] = new_value
     
     return x, y, matrix_new
@@ -39,7 +41,10 @@ def hill_climbing(n_cities, max_value, n_iterations):
     # A list of all the matrices
     mtx_list = []
     
-    # A list of the performance for each matrix
+    # A list of the run-time for each matrix
+    run_time_list = []
+    
+    # A list of the performance (number of recursions) for each matrix
     performance_list = []
     
     # A list of whether each matrix in mtx_list is used or not
@@ -50,15 +55,18 @@ def hill_climbing(n_cities, max_value, n_iterations):
     
     # 1. Make a random matrix
     
-    # Matrice elements to be a random number between 1 and max_value
+    # Matrice elements to be a random number between 0 and max_value
     # (Same as Zhang & Khorfs a study of the complexity transitions on the ATSP)
-    mtx_1 = np.random.randint(1, max_value, size = (n_cities, n_cities)).astype(float)
+    mtx_1 = np.random.randint(0, max_value, size = (n_cities, n_cities)).astype(float)
     np.fill_diagonal(mtx_1, np.inf)
     mtx_list.append(mtx_1)
     used_or_not.append(True)
     indices.append((0, 0))
     
-    #2. Calculate the shortest tour & measure and save the performance (time) of Little's algorithm
+    #2. Calculate the shortest tour & measure and save the performance of Little's algorithm
+    run_time_list_1 = get_minimal_route(mtx_1)[0]
+    run_time_list.append(run_time_list_1)
+    
     performance_1 = get_minimal_route(mtx_1)[2]
     performance_list.append(performance_1)
     
@@ -72,18 +80,22 @@ def hill_climbing(n_cities, max_value, n_iterations):
             mtx_list.append(mtx_2)
             
             # 4. Calculate the shortest tour & measure the performance (time) of Little's algorithm
+            run_time_list_2 = get_minimal_route(mtx_2)[0]
+            run_time_list.append(run_time_list_2)
+            
             performance_2 = get_minimal_route(mtx_2)[2]
             performance_list.append(performance_2)
             
             # 5. 
-            # (a) If the new performance > old performance
-            if performance_2  > performance_1:
+            # (a) If the new performance >= old performance
+            if performance_2  >= performance_1:
                 # new matrix becomes mtx_1, mutate from that
                 mtx_1 = mtx_2.copy()
                 performance_1 = performance_2
+                run_time_list_1 = run_time_list_2
                 used_or_not.append(True)
             
-            # (b) If the new performance <= old performance, revert to the older matrix
+            # (b) If the new performance < old performance, revert to the older matrix
             else:
                 # Don't need to do anything, just repeat with mtx_1
                 used_or_not.append(False)
@@ -91,12 +103,13 @@ def hill_climbing(n_cities, max_value, n_iterations):
     except KeyboardInterrupt:
         pass
     
-    return mtx_list, performance_list, used_or_not, indices
+    return mtx_list, run_time_list, performance_list, used_or_not, indices
 
 # Function to automatically run n_iterations of hill_climbing
 def hill_climbing_many_iterations(n_hill_climbing_iterations, n_cities, max_value, n_iterations):
     
     list_mtx_list = []
+    list_run_time_list = []
     list_performance_list = []
     list_used_or_not = []
     list_indices = []
@@ -105,9 +118,10 @@ def hill_climbing_many_iterations(n_hill_climbing_iterations, n_cities, max_valu
         for i in range(0, n_hill_climbing_iterations):
             start_time = time.time()
             
-            mtx_list, performance_list, used_or_not, indices = hill_climbing(n_cities, max_value, n_iterations)
+            mtx_list, run_time_list, performance_list, used_or_not, indices = hill_climbing(n_cities, max_value, n_iterations)
             
             list_mtx_list.append(mtx_list)
+            list_run_time_list.append(run_time_list)
             list_performance_list.append(performance_list)
             list_used_or_not.append(used_or_not)
             list_indices.append(indices)
@@ -119,4 +133,4 @@ def hill_climbing_many_iterations(n_hill_climbing_iterations, n_cities, max_valu
     except KeyboardInterrupt:
         pass
 
-    return list_mtx_list, list_performance_list, list_used_or_not, list_indices
+    return list_mtx_list, list_run_time_list, list_performance_list, list_used_or_not, list_indices
