@@ -1,0 +1,3 @@
+[submodule "littles_algorithm"]
+	path = littles_algorithm
+	url = ./littles_algorithm/.git
