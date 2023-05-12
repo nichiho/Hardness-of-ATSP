@@ -2,6 +2,7 @@
 import numpy as np
 import random
 import time
+import pickle
 
 # Import files
 import sys
@@ -72,7 +73,7 @@ def hill_climbing(n_cities, max_value, n_generations):
     
     try:
         for i in range(0, n_generations):
-            print(i)
+            start_time = time.time()
 
             # 3. Mutate the matrix (change a single number)
             x, y, mtx_2 = mutate_matrix(mtx_1, n_cities, max_value)
@@ -100,6 +101,10 @@ def hill_climbing(n_cities, max_value, n_generations):
                 # Don't need to do anything, just repeat with mtx_1
                 used_or_not.append(False)
         
+            end_time = time.time()
+            
+            print("Finished ", i + 1, "generation in ", end_time - start_time, "seconds!")
+            
     except KeyboardInterrupt:
         pass
     
@@ -128,9 +133,36 @@ def hill_climbing_many_runs(n_runs, n_cities, max_value, n_generations):
             
             end_time = time.time()
             
-            print("Finished ", i + 1, " iterations in ", end_time - start_time, "seconds!")
+            print("Finished ", i + 1, " runs in ", end_time - start_time, "seconds!")
         
+        # Save the lists
+        data = {'mtx_list': list_mtx_list,
+                'run_time_list': list_run_time_list,
+                'performance_list': list_performance_list,
+                'used_or_not_list': list_used_or_not,
+                'indices_list': list_indices}
+
+        filename = 'data/list_{}_{}_{}_{}.pkl'.format(n_runs, n_cities, max_value, n_generations)
+
+        with open(filename, 'wb') as f:
+            pickle.dump(data, f)
+            
     except KeyboardInterrupt:
         pass
 
-    return list_mtx_list, list_run_time_list, list_performance_list, list_used_or_not, list_indices
+    return list_mtx_list, list_run_time_list, list_performance_list, list_used_or_not, list_indices, filename
+
+# Function that opens file
+def hill_climbing_open_file(n_runs, n_cities, max_value, n_generations):
+
+    filename = 'data/list_{}_{}_{}_{}.pkl'.format(n_runs, n_cities, max_value, n_generations)
+
+    with open(filename, 'rb') as f:
+        data = pickle.load(f)
+
+    mtx_list = data['mtx_list']
+    performance_list = data['performance_list']
+    used_or_not_list = data['used_or_not_list']
+    indices_list = data['indices_list']
+    
+    return mtx_list, performance_list, used_or_not_list, indices_list
