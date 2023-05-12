@@ -36,7 +36,7 @@ def mutate_matrix(matrix, n_cities, max_value):
     
     return x, y, matrix_new
 
-def hill_climbing(n_cities, max_value, n_iterations):
+def hill_climbing(n_cities, max_value, n_generations):
     
     # A list of all the matrices
     mtx_list = []
@@ -71,8 +71,8 @@ def hill_climbing(n_cities, max_value, n_iterations):
     performance_list.append(performance_1)
     
     try:
-        for i in range(0, n_iterations):
-            # print(i)
+        for i in range(0, n_generations):
+            print(i)
 
             # 3. Mutate the matrix (change a single number)
             x, y, mtx_2 = mutate_matrix(mtx_1, n_cities, max_value)
@@ -106,7 +106,7 @@ def hill_climbing(n_cities, max_value, n_iterations):
     return mtx_list, run_time_list, performance_list, used_or_not, indices
 
 # Function to automatically run n_iterations of hill_climbing
-def hill_climbing_many_iterations(n_hill_climbing_iterations, n_cities, max_value, n_iterations):
+def hill_climbing_many_runs(n_runs, n_cities, max_value, n_generations):
     
     list_mtx_list = []
     list_run_time_list = []
@@ -115,10 +115,10 @@ def hill_climbing_many_iterations(n_hill_climbing_iterations, n_cities, max_valu
     list_indices = []
 
     try:
-        for i in range(0, n_hill_climbing_iterations):
+        for i in range(0, n_runs):
             start_time = time.time()
             
-            mtx_list, run_time_list, performance_list, used_or_not, indices = hill_climbing(n_cities, max_value, n_iterations)
+            mtx_list, run_time_list, performance_list, used_or_not, indices = hill_climbing(n_cities, max_value, n_generations)
             
             list_mtx_list.append(mtx_list)
             list_run_time_list.append(run_time_list)
