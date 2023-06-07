@@ -75,7 +75,6 @@ def hill_climbing(n_cities, max_value, n_generations, random_start = True, rando
         mtx_1 = random_start_matrix
         run_time_1 = get_minimal_route(mtx_1)[0]
         performance_1 = get_minimal_route(mtx_1)[2]
-        n_generations = n_generations + 1
         
     try:
         for i in range(0, n_generations):
@@ -120,42 +119,42 @@ def hill_climbing(n_cities, max_value, n_generations, random_start = True, rando
 def hill_climbing_many_runs(n_runs, n_cities, max_value, n_generations, n_generations_old = 0):
     
     if n_generations_old == 0:
-        list_mtx_list = [[]] * n_runs
-        list_run_time_list = [[]] * n_runs
-        list_performance_list = [[]] * n_runs
-        list_used_or_not = [[]] * n_runs
-        list_indices = [[]] * n_runs
+        list_mtx_list = []
+        list_run_time_list = []
+        list_performance_list = []
+        list_used_or_not = []
+        list_indices = []
         
         random_start = True
         random_start_matrix = None
     
-    else:
-        list_mtx_list, list_run_time_list, list_performance_list, list_used_or_not, list_indices = hill_climbing_open_file(n_runs, n_cities, max_value, n_generations_old)
+    # else:
+    #     list_mtx_list, list_run_time_list, list_performance_list, list_used_or_not, list_indices = hill_climbing_open_file(n_runs, n_cities, max_value, n_generations_old)
         
-        random_start = False
+    #     random_start = False
         
     try:
         for i in range(0, n_runs):
             start_time = time.time()
             
-            if not random_start:
-                last_used_matrix_index = -1
+            # if not random_start:
+            #     last_used_matrix_index = -1
 
-                for j in range(len(list_used_or_not[i])-1, -1, -1):
-                    if list_used_or_not[i][j] == True:
-                        last_used_matrix_index = j
-                        break
+            #     for j in range(len(list_used_or_not[i])-1, -1, -1):
+            #         if list_used_or_not[i][j] == True:
+            #             last_used_matrix_index = j
+            #             break
                 
-                random_start_matrix = list_mtx_list[i][last_used_matrix_index]
-                print(random_start_matrix)
+            #     random_start_matrix = list_mtx_list[i][last_used_matrix_index]
+            #     print(random_start_matrix)
                 
             mtx_list, run_time_list, performance_list, used_or_not, indices = hill_climbing(n_cities, max_value, n_generations, random_start, random_start_matrix)
             
-            list_mtx_list[i].append(mtx_list)
-            list_run_time_list[i].append(run_time_list)
-            list_performance_list[i].append(performance_list)
-            list_used_or_not[i].append(used_or_not)
-            list_indices[i].append(indices)
+            list_mtx_list.append(mtx_list)
+            list_run_time_list.append(run_time_list)
+            list_performance_list.append(performance_list)
+            list_used_or_not.append(used_or_not)
+            list_indices.append(indices)
             
             end_time = time.time()
             
@@ -179,9 +178,9 @@ def hill_climbing_many_runs(n_runs, n_cities, max_value, n_generations, n_genera
     return list_mtx_list, list_run_time_list, list_performance_list, list_used_or_not, list_indices, filename
 
 # Function that opens file
-def hill_climbing_open_file(n_runs, n_cities, max_value, n_generations):
+def hill_climbing_open_file(n_runs, n_cities, max_value, n_generations, folder):
 
-    filename = 'data/list_{}_{}_{}_{}.pkl'.format(n_runs, n_cities, max_value, n_generations)
+    filename = '{}/list_{}_{}_{}_{}.pkl'.format(folder, n_runs, n_cities, max_value, n_generations)
 
     with open(filename, 'rb') as f:
         data = pickle.load(f)
