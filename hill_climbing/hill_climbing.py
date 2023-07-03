@@ -192,3 +192,53 @@ def hill_climbing_open_file(n_runs, n_cities, max_value, n_generations, folder):
     indices_list = data['indices_list']
     
     return mtx_list, run_time_list, performance_list, used_or_not_list, indices_list
+
+def hill_climbing_continue(n_cities, max_value, n_generations, mtx_list, run_time_list, performance_list, used_or_not_list, indices_list):
+
+    # Find the last matrix that was an accepted mutation
+    n_old_generations = len(mtx_list)
+    for i in range(n_old_generations - 1, -1, -1):
+        if used_or_not_list[i] == True:
+            mtx_1 = mtx_list[i]
+            run_time_1 = run_time_list[i]
+            performance_1 = performance_list[i]
+            break
+        
+    try:
+        for i in range(0, n_generations):
+            start_time = time.time()
+
+            # 3. Mutate the matrix (change a single number)
+            x, y, mtx_2 = mutate_matrix(mtx_1, n_cities, max_value)
+            indices_list.append((x, y))
+            mtx_list.append(mtx_2)
+            
+            # 4. Calculate the shortest tour & measure the performance (time) of Little's algorithm
+            run_time_2 = get_minimal_route(mtx_2)[0]
+            run_time_list.append(run_time_2)
+            
+            performance_2 = get_minimal_route(mtx_2)[2]
+            performance_list.append(performance_2)
+            
+            # 5. 
+            # (a) If the new performance >= old performance
+            if performance_2  >= performance_1:
+                # new matrix becomes mtx_1, mutate from that
+                mtx_1 = mtx_2.copy()
+                performance_1 = performance_2
+                run_time_1 = run_time_2
+                used_or_not.append(True)
+            
+            # (b) If the new performance < old performance, revert to the older matrix
+            else:
+                # Don't need to do anything, just repeat with mtx_1
+                used_or_not.append(False)
+        
+            end_time = time.time()
+            
+            print("Finished ", i + 1, "generation in ", end_time - start_time, "seconds!")
+            
+    except KeyboardInterrupt:
+        pass
+    
+    return mtx_list, run_time_list, performance_list, used_or_not, indices
