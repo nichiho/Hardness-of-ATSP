@@ -227,12 +227,12 @@ def hill_climbing_continue(n_cities, max_value, n_generations, mtx_list, run_tim
                 mtx_1 = mtx_2.copy()
                 performance_1 = performance_2
                 run_time_1 = run_time_2
-                used_or_not.append(True)
+                used_or_not_list.append(True)
             
             # (b) If the new performance < old performance, revert to the older matrix
             else:
                 # Don't need to do anything, just repeat with mtx_1
-                used_or_not.append(False)
+                used_or_not_list.append(False)
         
             end_time = time.time()
             
@@ -241,4 +241,4 @@ def hill_climbing_continue(n_cities, max_value, n_generations, mtx_list, run_tim
     except KeyboardInterrupt:
         pass
     
-    return mtx_list, run_time_list, performance_list, used_or_not, indices
+    return mtx_list, run_time_list, performance_list, used_or_not_list, indices_list
