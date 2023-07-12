@@ -17,7 +17,7 @@ folder = 'data'
 mtx_list, run_time_list, performance_list, used_or_not_list, indices_list = hill_climbing_open_file(n_runs, n_cities, max_value, n_generations, folder)
 
 # Continue running hill-climber
-mtx_list_continued, run_time_list_continued, performance_list_continued, used_or_not_continued, indices_continued = hill_climbing_continue(n_cities, max_value, 500, mtx_list[2], run_time_list[2], performance_list[2], used_or_not_list[2], indices_list[2])
+hill_climbing_continue(n_cities, max_value, 500, mtx_list[9], run_time_list[9], performance_list[9], used_or_not_list[9], indices_list[9])
 
 # Save the lists
 data = {'mtx_list': mtx_list,
@@ -26,9 +26,7 @@ data = {'mtx_list': mtx_list,
         'used_or_not_list': used_or_not_list,
         'indices_list': indices_list}
 
-n_generations = 1500
-
 filename = 'data/list_{}_{}_{}_{}.pkl'.format(n_runs, n_cities, max_value, n_generations)
 
 with open(filename, 'wb') as f:
-    pickle.dump(data, f)
+        pickle.dump(data, f)
