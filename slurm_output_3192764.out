@@ -1,0 +1,22 @@
+4
+5
+6
+slurmstepd: error: *** JOB 3192764 ON gcn27 CANCELLED AT 2023-07-31T17:37:27 DUE TO TIME LIMIT ***
+slurmstepd: error: *** STEP 3192764.0 ON gcn27 CANCELLED AT 2023-07-31T17:37:27 DUE TO TIME LIMIT ***
+srun: Job step aborted: Waiting up to 32 seconds for job step to finish.
+slurmstepd: error: container_p_join: setns failed for /slurm/3192764/.ns: Invalid argument
+slurmstepd: error: container_g_join(3192764): Invalid argument
+
+JOB STATISTICS
+==============
+Job ID: 3192764
+Cluster: snellius
+User/Group: nskor/nskor
+State: TIMEOUT (exit code 0)
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 02:59:30
+CPU Efficiency: 5.53% of 2-06:04:30 core-walltime
+Job Wall-clock time: 03:00:15
+Memory Utilized: 3.78 GB
+Memory Efficiency: 13.84% of 27.34 GB

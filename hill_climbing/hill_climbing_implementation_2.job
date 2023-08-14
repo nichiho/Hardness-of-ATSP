@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#SBATCH --partition=gpu
+#SBATCH --gpus=1
+#SBATCH --job-name=hill_climbing_implementation
+#SBATCH --ntasks=1
+#SBATCH --time=50:00:00
+#SBATCH --mem=28000M
+#SBATCH --output=slurm_output_%A.out
+
+source /home/nskor/Hardness-of-ATSP/.venv/bin/activate
+
+cd hill_climbing/
+
+# Run your code
+srun python -u hill_climbing_implementation_2.py

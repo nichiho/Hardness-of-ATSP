@@ -1,0 +1,45 @@
+Finished  1 generation in  50.26396059989929 seconds!
+Finished  2 generation in  50.29800724983215 seconds!
+Finished  3 generation in  50.376845836639404 seconds!
+Finished  4 generation in  50.39903521537781 seconds!
+Finished  5 generation in  50.3675537109375 seconds!
+Finished  6 generation in  51.67255783081055 seconds!
+Finished  7 generation in  51.58138966560364 seconds!
+Finished  8 generation in  51.54475450515747 seconds!
+Finished  9 generation in  49.385947704315186 seconds!
+Finished  10 generation in  49.402321100234985 seconds!
+Finished  11 generation in  49.32340431213379 seconds!
+Finished  12 generation in  49.33707642555237 seconds!
+Finished  13 generation in  49.36348342895508 seconds!
+Finished  14 generation in  49.82212567329407 seconds!
+Finished  15 generation in  49.858559131622314 seconds!
+Finished  16 generation in  49.8689911365509 seconds!
+Finished  17 generation in  49.860652685165405 seconds!
+Finished  18 generation in  49.87250876426697 seconds!
+Finished  19 generation in  45.906962394714355 seconds!
+Finished  20 generation in  48.786556243896484 seconds!
+Traceback (most recent call last):
+  File "/gpfs/home1/nskor/Hardness-of-ATSP/hill_climbing/hill_climbing_implementation_1.py", line 21, in <module>
+    hill_climbing_continue(n_cities, max_value, 200, mtx_list[i], run_time_list[i], performance_list[i], used_or_not_list[i], indices_list[i])
+  File "/gpfs/home1/nskor/Hardness-of-ATSP/hill_climbing/hill_climbing.py", line 217, in hill_climbing_continue
+    run_time_2 = get_minimal_route(mtx_2)[0]
+  File "/gpfs/home1/nskor/Hardness-of-ATSP/hill_climbing/../littles_algorithm/algorithm.py", line 488, in get_minimal_route
+    (zero_indices[0][1], zero_indices[1][1])]
+IndexError: index 1 is out of bounds for axis 0 with size 1
+srun: error: gcn10: task 0: Exited with exit code 1
+srun: launch/slurm: _step_signal: Terminating StepId=3066514.0
+
+JOB STATISTICS
+==============
+Job ID: 3066514
+Cluster: snellius
+User/Group: nskor/nskor
+State: RUNNING
+Nodes: 1
+Cores per node: 18
+CPU Utilized: 00:00:00
+CPU Efficiency: 0.00% of 05:04:48 core-walltime
+Job Wall-clock time: 00:16:56
+Memory Utilized: 0.00 MB (estimated maximum)
+Memory Efficiency: 0.00% of 27.34 GB (27.34 GB/node)
+WARNING: Efficiency statistics may be misleading for RUNNING jobs.
